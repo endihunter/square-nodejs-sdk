@@ -263,6 +263,7 @@ export class DefaultRequestBuilder<BaseUrlParamType, AuthParams>
     this._setContentTypeIfNotSet(TEXT_CONTENT_TYPE);
   }
   json(data: unknown): void {
+    console.dir(data, {depth: undefined});
     this._body = JSON.stringify(data);
     this._setContentTypeIfNotSet(JSON_CONTENT_TYPE);
   }
@@ -424,6 +425,7 @@ export class DefaultRequestBuilder<BaseUrlParamType, AuthParams>
       return { ...request, headers };
     });
     const result = await this.call(requestOptions);
+    console.dir(result.body, {depth: undefined});
     if (result.body === '') {
       throw new Error(
         'Could not parse body as JSON. The response body is empty.'
@@ -440,6 +442,7 @@ export class DefaultRequestBuilder<BaseUrlParamType, AuthParams>
     } catch (error) {
       throw new Error(`Could not parse body as JSON.\n\n${error.message}`);
     }
+
     const mappingResult = validateAndMap(parsed, schema);
     if (mappingResult.errors) {
       throw new ResponseValidationError(result, mappingResult.errors);
